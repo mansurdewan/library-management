@@ -13,34 +13,33 @@ datasource db {
   url      = env("DATABASE_URL")
 }
 
-
 model Book {
-  id             String  @id @default(uuid()) // Unique UUID for each book
-  title          String  
-  genre          String  
-  publishedYear  Int  
-  totalCopies    Int  
-  availableCopies Int  
-  borrowRecords  BorrowRecord[] // One-to-many relationship with BorrowRecord
+  bookId          String         @id @default(uuid()) // Unique UUID for each book
+  title           String
+  genre           String
+  publishedYear   Int
+  totalCopies     Int
+  availableCopies Int
+  borrowRecords   BorrowRecord[] // One-to-many relationship with BorrowRecord
 }
 
 model Member {
-  id             String   @id @default(uuid()) // Unique UUID for each member
-  name           String  
-  email          String   @unique  
-  phone          String  
-  membershipDate DateTime @default(now())  
+  memberId       String         @id @default(uuid()) // Unique UUID for each member
+  name           String
+  email          String         @unique
+  phone          String
+  membershipDate DateTime       @default(now())
   borrowRecords  BorrowRecord[] // One-to-many relationship with BorrowRecord
 }
 
 model BorrowRecord {
-  id          String   @id @default(uuid()) // Unique UUID for each borrow record
-  borrowDate  DateTime @default(now())  
-  returnDate  DateTime? // Nullable, only filled when the book is returned
-  bookId      String  
-  memberId    String  
+  id         String    @id @default(uuid()) // Unique UUID for each borrow record
+  borrowDate DateTime  @default(now())
+  returnDate DateTime? // Nullable, only filled when the book is returned
+  bookId     String
+  memberId   String
 
   // Relationships
-  book   Book   @relation(fields: [bookId], references: [id])
-  member Member @relation(fields: [memberId], references: [id])
+  book   Book   @relation(fields: [bookId], references: [bookId])
+  member Member @relation(fields: [memberId], references: [memberId])
 }
